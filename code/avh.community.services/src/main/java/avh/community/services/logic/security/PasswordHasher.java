@@ -1,4 +1,4 @@
-package avh.community.services.api.util;
+package avh.community.services.logic.security;
 
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Component;

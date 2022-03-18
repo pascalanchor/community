@@ -70,7 +70,7 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/avh/community/api/token/{tokenid}")
+	@GetMapping("/avh/community/api/user/token/{tokenid}")
 	public APIUserOut getUserInfo(@PathVariable String tokenid) {
 		try {
 			User u = usvc.getUserByToken(tokenid);

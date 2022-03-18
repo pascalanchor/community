@@ -8,6 +8,7 @@ public class ModelRepo {
 	@Autowired private UserRepo urep;
 	@Autowired private CredentialsRepo crep;
 	@Autowired private TokenRepo trep;
+	@Autowired private ChannelRepo chrep;
 	
 	public ModelRepo() {}
 	
@@ -21,6 +22,10 @@ public class ModelRepo {
 	
 	public TokenRepo getTokenRepo() {
 		return this.trep;
+	}
+	
+	public ChannelRepo getChannelRepo() {
+		return this.chrep;
 	}
 	
 }

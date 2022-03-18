@@ -1,7 +1,6 @@
 package avh.community.services.logic;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,17 +13,17 @@ import avh.community.model.Credentials;
 import avh.community.model.Token;
 import avh.community.model.User;
 import avh.community.services.api.errors.BusinessException;
-import avh.community.services.api.util.PasswordHasher;
+import avh.community.services.logic.security.AuthorizationManager;
+import avh.community.services.logic.security.PasswordHasher;
 import avh.community.services.persistence.ModelRepo;
 
 @Component
 public class UserControllerImpl {
 	public static final long TokenDuration = 1 * 60 * 60 * 1000;
 	
-	@Autowired
-	private ModelRepo rep;
-	@Autowired
-	private PasswordHasher pHasher;
+	@Autowired private ModelRepo rep;
+	@Autowired private PasswordHasher pHasher;
+	@Autowired private AuthorizationManager amgr;
 	
 	@Transactional
 	public User registerUser(User u, String pwd) {
@@ -104,26 +103,16 @@ public class UserControllerImpl {
 	}
 	
 	public User getUserByToken(String token) {
-		Token tk = getToken(token);
+		Token tk = amgr.getToken(token);
 		return tk.getUser();
 	}
 	
 	private boolean validateToken(String token, User u) {
-		Token tk = getToken(token);
+		Token tk = amgr.getToken(token);
 		if (tk.getUser().getEmail().equals(u.getEmail()))
 			return true;
 		else
 			throw new BusinessException(String.format("token %s not valid for user %s", token, u.getEmail()));
-	}
-	
-	private Token getToken(String token) {
-		Optional<Token> ot = rep.getTokenRepo().findById(token);
-		if (ot.isEmpty())
-			throw new BusinessException(String.format("invalid token %s", token));
-		Token tk = ot.get();
-		if (tk.getExpiryDate().getTime() < System.currentTimeMillis())
-			throw new BusinessException(String.format("token %s already expired", token));
-		return tk;
 	}
 	
 	private User getUser(String email) {
