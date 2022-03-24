@@ -10,4 +10,5 @@ import avh.community.model.Channel;
 @Repository
 public interface ChannelRepo extends CrudRepository<Channel, String> {
 	public List<Channel> findByName(String name);
+	public Channel  findByEid(String eid);
 }

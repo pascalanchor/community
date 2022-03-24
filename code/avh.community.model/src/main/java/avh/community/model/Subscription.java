@@ -2,6 +2,9 @@ package avh.community.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 
@@ -22,11 +25,13 @@ public class Subscription implements Serializable {
 	//uni-directional many-to-one association to Channel
 	@ManyToOne
 	@JoinColumn(name="channel_id")
+	@Autowired
 	private Channel channel;
 
 	//uni-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@Autowired 
 	private User user;
 
 	//bi-directional many-to-one association to ChannelThread
@@ -56,8 +61,9 @@ public class Subscription implements Serializable {
 		return this.channel;
 	}
 
-	public void setChannel(Channel channel) {
-		this.channel = channel;
+	public void setChannel(Channel ch) {
+		this.channel=ch;
+		
 	}
 
 	public User getUser() {
@@ -65,7 +71,7 @@ public class Subscription implements Serializable {
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.user=user;
 	}
 
 	public List<ChannelThread> getThreads() {

@@ -9,6 +9,8 @@ public class ModelRepo {
 	@Autowired private CredentialsRepo crep;
 	@Autowired private TokenRepo trep;
 	@Autowired private ChannelRepo chrep;
+	@Autowired private SubscriptionRepo srep;
+	
 	
 	public ModelRepo() {}
 	
@@ -28,4 +30,8 @@ public class ModelRepo {
 		return this.chrep;
 	}
 	
+	public SubscriptionRepo getSubscriptionRepo()
+	{
+		return this.srep;
+	}
 }
