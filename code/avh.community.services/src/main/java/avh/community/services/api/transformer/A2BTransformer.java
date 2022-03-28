@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import avh.community.model.Channel;
+import avh.community.model.ChannelThread;
 import avh.community.model.Subscription;
 import avh.community.model.Token;
 import avh.community.model.User;
 import avh.community.services.api.model.in.APIChannelIn;
+import avh.community.services.api.model.in.APIChannelThreadIn;
 import avh.community.services.api.model.in.APISubscriptionIn;
 import avh.community.services.api.model.in.APIUserIn;
 import avh.community.services.api.model.out.APIChannelOut;
+import avh.community.services.api.model.out.APIChannelThreadOut;
 import avh.community.services.api.model.out.APISubscriptionOut;
 import avh.community.services.api.model.out.APITokenOut;
 import avh.community.services.api.model.out.APIUserOut;
@@ -63,6 +66,25 @@ public class A2BTransformer {
 	public static APISubscriptionOut subscriptionFromModel(Subscription sb)
 	{
 		APISubscriptionOut res=new APISubscriptionOut(sb.getUser().getEmail(),sb.getChannel().getEid(),sb.getStatus());
+		return res;
+	}
+	
+	public static ChannelThread ThreadToModel(APIChannelThreadIn th) {
+		ChannelThread res = new ChannelThread();
+		res.setKeywords(th.getKeywords());
+		res.setSubject(th.getSubject());
+		System.out.println(res.getKeywords());
+		return res;
+	}
+	
+	public static APIChannelThreadOut ThreadFromModel(ChannelThread th) {
+		APISubscriptionOut sub = subscriptionFromModel(th.getSubscription());
+		APIChannelThreadOut res = new APIChannelThreadOut(
+				th.getKeywords(),
+				th.getSubject(),
+				th.getCdate().getTime(),
+				sub
+				);
 		return res;
 	}
 	

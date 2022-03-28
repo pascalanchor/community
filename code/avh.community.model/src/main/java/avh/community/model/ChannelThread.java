@@ -25,7 +25,7 @@ public class ChannelThread implements Serializable {
 	private String subject;
 
 	//bi-directional many-to-one association to Subscription
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="subscription_id")
 	private Subscription subscription;
 

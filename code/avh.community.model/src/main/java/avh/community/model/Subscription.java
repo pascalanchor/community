@@ -95,5 +95,12 @@ public class Subscription implements Serializable {
 
 		return thread;
 	}
+	
+	public Boolean isEmpty() {
+		if(eid == null)
+			return true;
+		else return this.eid.isEmpty();
+	}
 
 }
+	

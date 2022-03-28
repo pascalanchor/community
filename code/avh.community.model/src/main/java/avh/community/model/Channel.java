@@ -68,5 +68,13 @@ public class Channel implements Serializable {
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
+	
+	@Override
+    public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        return (anObject instanceof Channel) && (((Channel) anObject).getEid().equals(this.getEid()));
+    }
 
 }

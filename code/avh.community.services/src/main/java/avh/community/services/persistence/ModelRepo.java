@@ -10,7 +10,7 @@ public class ModelRepo {
 	@Autowired private TokenRepo trep;
 	@Autowired private ChannelRepo chrep;
 	@Autowired private SubscriptionRepo srep;
-	
+	@Autowired private ChannelThreadRepo threp;
 	
 	public ModelRepo() {}
 	
@@ -33,5 +33,9 @@ public class ModelRepo {
 	public SubscriptionRepo getSubscriptionRepo()
 	{
 		return this.srep;
+	}
+	
+	public ChannelThreadRepo getChannelThreadRepo() {
+		return this.threp;
 	}
 }
