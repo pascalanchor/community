@@ -69,11 +69,11 @@ public class A2BTransformer {
 		return res;
 	}
 	
+	
 	public static ChannelThread ThreadToModel(APIChannelThreadIn th) {
 		ChannelThread res = new ChannelThread();
 		res.setKeywords(th.getKeywords());
-		res.setSubject(th.getSubject());
-		System.out.println(res.getKeywords());
+		res.setSubject(th.getSubject());;
 		return res;
 	}
 	
@@ -83,8 +83,21 @@ public class A2BTransformer {
 				th.getKeywords(),
 				th.getSubject(),
 				th.getCdate().getTime(),
-				sub
+				sub,
+				th.getEid()
 				);
+		return res;
+	}
+	
+	public static List<APIChannelThreadOut> ListThreadFromListModel(List<ChannelThread> mlist){
+		List<APIChannelThreadOut> res = new ArrayList<>();
+		for(ChannelThread mth: mlist) {
+			res.add(new APIChannelThreadOut(mth.getKeywords(),
+					mth.getSubject(),
+					mth.getCdate().getTime(),
+					subscriptionFromModel(mth.getSubscription()),
+					mth.getEid()));
+		}
 		return res;
 	}
 	

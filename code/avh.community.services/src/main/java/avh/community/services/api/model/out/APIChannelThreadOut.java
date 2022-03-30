@@ -3,6 +3,7 @@ package avh.community.services.api.model.out;
 import avh.community.services.api.model.APIChannelThread;
 
 public class APIChannelThreadOut extends APIChannelThread{
+	private String id;
 	private long creationDate;
 	private APISubscriptionOut subscription;
 	
@@ -10,10 +11,11 @@ public class APIChannelThreadOut extends APIChannelThread{
 	
 	
 	
-	public APIChannelThreadOut(String keywords, String subject,long creationDate, APISubscriptionOut subscription) {
+	public APIChannelThreadOut(String keywords, String subject,long creationDate, APISubscriptionOut subscription,String id) {
 		super(keywords, subject);
 		this.creationDate = creationDate;
 		this.subscription = subscription;
+		this.id = id;
 	}
 
 
@@ -40,6 +42,19 @@ public class APIChannelThreadOut extends APIChannelThread{
 		this.subscription = subscription;
 	}
 
+
+
+	public String getId() {
+		return id;
+	}
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	
 	
 	
 

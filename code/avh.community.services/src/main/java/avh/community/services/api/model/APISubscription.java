@@ -1,10 +1,11 @@
 package avh.community.services.api.model;
 
+import avh.community.services.api.model.in.APIChannelIn;
 
 public class APISubscription {
 
 	private String user_email;
-	private String channel_id;
+	private String channel_id;	
 	
 	public APISubscription() {
 	}

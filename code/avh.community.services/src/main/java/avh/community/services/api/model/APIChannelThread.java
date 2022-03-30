@@ -1,5 +1,7 @@
 package avh.community.services.api.model;
 
+import avh.community.services.api.model.in.APISubscriptionIn;
+
 public class APIChannelThread {
 
 	private String keywords;
@@ -27,6 +29,9 @@ public class APIChannelThread {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
+
+	
+	
 	
 	
 }
