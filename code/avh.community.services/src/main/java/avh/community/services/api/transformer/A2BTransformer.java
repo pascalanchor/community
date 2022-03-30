@@ -8,7 +8,6 @@ import avh.community.model.Subscription;
 import avh.community.model.Token;
 import avh.community.model.User;
 import avh.community.services.api.model.in.APIChannelIn;
-import avh.community.services.api.model.in.APISubscriptionIn;
 import avh.community.services.api.model.in.APIUserIn;
 import avh.community.services.api.model.out.APIChannelOut;
 import avh.community.services.api.model.out.APISubscriptionOut;
@@ -65,5 +64,19 @@ public class A2BTransformer {
 		APISubscriptionOut res=new APISubscriptionOut(sb.getUser().getEmail(),sb.getChannel().getEid(),sb.getStatus());
 		return res;
 	}
+	
+	public static List<APISubscriptionOut> subscriptionListFromModel(List<Subscription> sbs){
+		List<APISubscriptionOut> res=new ArrayList<>();
+		for(Subscription sb:sbs)
+		{
+			APISubscriptionOut sbo=new APISubscriptionOut();
+			sbo.setChannel_id(sb.getChannel().getEid());
+			sbo.setUser_email(sb.getUser().getEmail());
+			sbo.setStatus(sb.getStatus());
+			res.add(sbo);
+		}
+		return res;
+	}
+	
 	
 }

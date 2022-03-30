@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import avh.community.model.Subscription;
 import avh.community.model.Token;
 import avh.community.model.User;
 import avh.community.services.api.errors.BusinessException;
+import avh.community.services.api.model.in.APIChannelIn;
 import avh.community.services.api.model.in.APISubscriptionIn;
 import avh.community.services.logic.domains.EChannelScope;
 import avh.community.services.logic.domains.EFeature;
@@ -44,7 +47,18 @@ public class ChannelControllerImpl {
 		return ch;
 	}
 	
-	
+	public List<Subscription> getUserSubscriptions(String token,String user_email)
+	{
+		Token tk = amgr.isAuthorized(token, EFeature.Channel);
+		if (tk == null)
+			throw new BusinessException(String.format("the user %s is not authorized to subscribe channel", tk.getUser().getEmail()));
+		
+		Optional<User> ou=rep.getUserRepo().findById(user_email);
+		if(ou.isEmpty())
+			throw new BusinessException(String.format("the user does not exist"));
+		List<Subscription> osb=rep.getSubscriptionRepo().findByUser(ou.get());
+		return osb;
+	}
 	
 	
 	public Subscription requestToJoinChannel(String token,APISubscriptionIn sbi) {
@@ -77,7 +91,7 @@ public class ChannelControllerImpl {
 		sb.setChannel(ch);
 		//specify the subscription status
 		if(sc==EChannelScope.Private)
-			sbs=ESubscriptionStatus.fromString("closed");
+			sbs=ESubscriptionStatus.fromString("pending");
 		else
 			sbs=ESubscriptionStatus.fromString("active");
 		sb.setStatus(sbs.getLabel());
@@ -94,5 +108,41 @@ public class ChannelControllerImpl {
 		Iterable<Channel> och = rep.getChannelRepo().findAll();
 		return och;
 	}
+	
+	
+	public Channel getChannelById(String token,String channel_id)
+	{
+		Token tk = amgr.isAuthorized(token, EFeature.Channel);
+		if (tk == null)
+			throw new BusinessException(String.format("the user %s is not authorized to define channel", tk.getUser().getEmail()));
+		Channel ch=rep.getChannelRepo().findByEid(channel_id);
+		if(ch==null)
+			throw new BusinessException(String.format("invalid channel id: %s",channel_id));
+		
+		return(ch);
+		
+	}
+	
+	public Channel updateChannel(String token,String channel_id,Channel ch)
+	{
+		Token tk = amgr.isAuthorized(token, EFeature.Channel);
+		if (tk == null)
+			throw new BusinessException(String.format("the user %s is not authorized to define channel", tk.getUser().getEmail()));
+		Channel ch1=rep.getChannelRepo().findByEid(channel_id);
+		List<Channel> ch2=rep.getChannelRepo().findByName(ch.getName());
+		if(ch1==null)
+			throw new BusinessException(String.format("invalid channel id: %s",channel_id));
+		
+		if((!ch2.isEmpty())&&(ch2.get(0).getEid()!=ch1.getEid()))
+			throw new BusinessException(String.format("the channel name must be unique %s", ch.getName()));
+		ch1.setName(ch.getName());
+		ch1.setScope(ch.getScope());
+		ch1.setDescription(ch.getDescription());
+		rep.getChannelRepo().save(ch1);
+		return ch1;
+		
+	}
+	
+	
 	
 }

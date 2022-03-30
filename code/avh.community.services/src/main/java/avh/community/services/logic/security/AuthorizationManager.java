@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import avh.community.model.Token;
-import avh.community.model.User;
 import avh.community.services.api.errors.BusinessException;
 import avh.community.services.logic.domains.EFeature;
 import avh.community.services.persistence.ModelRepo;
