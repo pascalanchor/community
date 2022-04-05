@@ -76,5 +76,9 @@ public class Channel implements Serializable {
         }
         return (anObject instanceof Channel) && (((Channel) anObject).getEid().equals(this.getEid()));
     }
+	
+	public boolean isEmpty() {
+		return this.getEid().isEmpty();
+	}
 
 }
