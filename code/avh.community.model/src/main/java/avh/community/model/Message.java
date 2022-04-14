@@ -24,7 +24,8 @@ public class Message implements Serializable {
 	private Integer stars;
 
 	//uni-directional many-to-one association to Message
-	@ManyToOne
+	
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="reply_to")
 	private Message message;
 

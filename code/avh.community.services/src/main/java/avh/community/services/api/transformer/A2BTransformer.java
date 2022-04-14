@@ -5,15 +5,18 @@ import java.util.List;
 
 import avh.community.model.Channel;
 import avh.community.model.ChannelThread;
+import avh.community.model.Message;
 import avh.community.model.Subscription;
 import avh.community.model.Token;
 import avh.community.model.User;
 import avh.community.services.api.model.in.APIChannelIn;
 import avh.community.services.api.model.in.APIChannelThreadIn;
+import avh.community.services.api.model.in.APIMessageIn;
 import avh.community.services.api.model.in.APISubscriptionIn;
 import avh.community.services.api.model.in.APIUserIn;
 import avh.community.services.api.model.out.APIChannelOut;
 import avh.community.services.api.model.out.APIChannelThreadOut;
+import avh.community.services.api.model.out.APIMessageOut;
 import avh.community.services.api.model.out.APISubscriptionOut;
 import avh.community.services.api.model.out.APITokenOut;
 import avh.community.services.api.model.out.APIUserOut;
@@ -87,5 +90,60 @@ public class A2BTransformer {
 				);
 		return res;
 	}
+	
+	
+	
+	public static Message MessageToModel(APIMessageIn msin) {
+		Message res=new Message();
+		res.setBody(msin.getBody());
+		res.setStars(msin.getStars());
+		return res;
+	}
+	
+	public static APIMessageOut MessageFromModel(Message msg) {
+		
+		APISubscriptionOut sub = subscriptionFromModel(msg.getSubscription());
+		APIChannelThreadOut th=ThreadFromModel(msg.getThread());
+		String reply_to;
+		
+		if(msg.getMessage()==null)//its a message
+			reply_to=null;
+		else //its a reply
+			reply_to=msg.getMessage().getEid();
+		APIMessageOut res=new APIMessageOut(msg.getEid(),
+				msg.getBody(),
+				msg.getStars(),
+				msg.getCdate(),
+				reply_to,
+				th,
+				sub);
+		return res;
+	}
+	
+	public static List<APIMessageOut> messageListFromModel(List<Message> mslist){
+		List<APIMessageOut> res=new ArrayList<>();
+		for(Message msg:mslist) {
+			APIMessageOut mso=new APIMessageOut();
+			mso.setBody(msg.getBody());
+			mso.setChannelThread(A2BTransformer.ThreadFromModel(msg.getThread()));
+			mso.setSubscription(A2BTransformer.subscriptionFromModel(msg.getSubscription()));
+			System.out.println("subs id: "+msg.getSubscription().getEid() );
+			mso.setId(msg.getEid());
+			String reply_to;
+			if(msg.getMessage()==null)// its a message
+				reply_to=null;
+			else//its a reply
+				reply_to=msg.getMessage().getEid();
+			mso.setReply_to(reply_to);
+			mso.setStars(msg.getStars());
+			mso.setCreationDate(msg.getCdate());
+			
+			res.add(mso);
+			
+		}
+		return res;
+	}
+	
+	
 	
 }
